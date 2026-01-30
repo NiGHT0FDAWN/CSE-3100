@@ -12,11 +12,4 @@ int main(void)
         
         printf("Total=%.6f Average=%.6f\n", total, average);
     }
-    if (count == 0) {
-        printf("No numbers entered.\n");
-    } else {
-        printf("\nFinal: %d numbers entered\n", count);
-    }
-    
-    return 0;
 }
