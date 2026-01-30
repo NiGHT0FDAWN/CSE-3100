@@ -10,7 +10,7 @@ int main(void)
         total += in;
         double average = total / count;
         
-        printf("Total = %.6f Average = %.6f\n", total, average);
+        printf("Total=%.6f Average=%.6f\n", total, average);
     }
     if (count == 0) {
         printf("No numbers entered.\n");
