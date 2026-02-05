@@ -12,31 +12,26 @@
 int main()
 {
 	int i, j, n;
-    int found = 0;
+
 	//We assume the smallest such n is no more than 1000000
-	for(n=1; n<=1000000 && !found; n++)
+	for(n=1; n<=1000000; n++)
 	{
-		//Use count to record the number of different ways of summing two positive cube numbers to n
-		int count = 0;
-		//TO DO
-		//Fill in code below
-        for(i=1;i<=100;i++){for(j=i; j<=100; j++) {
-                int cube_sum = i*i*i + j*j*j;
-                if (cube_sum == n) {
+        int count = 0;
+        for(i=1; i<=100; i++)
+        {
+            for(j=i; j<=100; j++)
+            {
+                if (i*i*i + j*j*j == n)
+                {
                     count++;
-                    break;
-                }
-                if (cube_sum > n) {
-                    break;
                 }
             }
-            
-            if (count >= 2) {
-                found = 1;
-                break;
-            }
-	    }
-    }
+        }
+        if (count >= 2)
+        {
+            break;
+        }
+	}
 
 
 	//Do not change code below
