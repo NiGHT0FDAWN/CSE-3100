@@ -12,21 +12,17 @@ double two_d_random(int n)
     int x = 0;
     int y = 0;
     double step = 0.0;
+    int visited[2*n+1][2*n+1];
+    for(int i=0; i<(2*n+1); i++){
+        for(int j=0; j<(2*n+1); j++)
+    }
     while(x<n && x>-n && y<n && y>-n){
         int r = rand() % 4;
-        if(r==0){
-            y++;
-        }
-        if(r==1){
-            x++;
-        }
-        if(r==2){
-            y--;
-        }
-        if(r==3){
-            x--;
-        }
-        step++;
+        if(r==0){y++;}
+        if(r==1){x++;}
+        if(r==2){y--;}
+        if(r==3){x--;}
+        if 
     return step/((2*n-1)*(2*n-1));
     }
 }
