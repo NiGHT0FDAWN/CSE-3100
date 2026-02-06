@@ -5,4 +5,5 @@ int main(){
     for(int i=0;i<len(ar);i++){
         printf("%d",i);
     }
+    return 0
 }
