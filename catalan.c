@@ -6,12 +6,12 @@
  * Do not print anything in this function.
  * Do not use floating-point numbers (or operations).
  */
-long catalan_number(int n)
+long catalan_number(int k)
 {
-    if (n < 0)
+    if (k < 0)
         return 0;
 
-    // TODO
+    return (4*k-2)/(k+1);
 }
 
 /* do not change main function */
