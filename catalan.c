@@ -8,9 +8,9 @@
  */
 long catalan_number(int k)
 {
-    if (k < 0)
-        return 0;
-    return (4*k-2)/(k+1) + catalan_number(k-1);
+    if (k <= 0)
+        return 1;
+    return catalan_number(k-1) * (4*k-2)/(k+1);
 }
 
 /* do not change main function */
