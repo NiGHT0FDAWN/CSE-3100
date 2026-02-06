@@ -10,8 +10,7 @@ long catalan_number(int k)
 {
     if (k < 0)
         return 0;
-
-    return (4*k-2)/(k+1);
+    return (4*k-2)/(k+1) + catalan_number(k-1);
 }
 
 /* do not change main function */
