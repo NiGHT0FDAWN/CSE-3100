@@ -10,7 +10,9 @@ double two_d_random(int n)
 	//The random walk should stop once the x coordinate or y coordinate reaches $-n$ or $n$. 
 	//The function should return the fraction of the visited $(x, y)$ coordinates inside (not including) the square.
     int x = 0;
-    int y = 0;
+    int y = 0; //dx dy keep track of 
+    int dx = 0;
+    int dy = 0;
     int step = 0.0;
     int visited[2*n+1][2*n+1];
     for(int i=0; i<(2*n+1); i++){
@@ -20,16 +22,30 @@ double two_d_random(int n)
     }
     while(x<n && x>-n && y<n && y>-n){
         int r = rand() % 4;
-        visited[x][y]++;
-        if(r==0){y++;}
-        if(r==1){x++;}
-        if(r==2){y--;}
-        if(r==3){x--;}
-        
+        if(r==0){
+            dx = 0;
+            dy = 1;
+        }
+        if(r==1){
+            dx = 1;
+            dy = 0;
+        }
+        if(r==2){
+            dx = 0;
+            dy = -1;
+        }
+        if(r==3){
+            dx = -1;
+            dy = 0;
+        }
+        visited[x+1+n][y+1+n]++;
+        x+=dx;
+        y+=dy;
     }
-    for(int i=0; i<(2*n); i++){
-        for(int j=0; j<(2*n); j++){
-            if(visited[i][j] >= 1){step++;}
+    //printf("x:%d y:%d dx:%d dy:%d\n", x,y,dx,dy);
+    for(int i=0; i<(2*n+1); i++){
+        for(int j=0; j<(2*n+1); j++){
+            if(visited[i][j] != 0){step++;}
         }
     }
     return step*1.0/((2*n-1)*(2*n-1)*1.0);
