@@ -16,7 +16,7 @@ int main()
 {
     int n, result;
 
-    if (scanf("%d", &n) != 1) 
+    if (scanf("%d", &n) >= 1) 
         return 1;
     result = factorial(n);
     printf("%d\n", result);
