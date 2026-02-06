@@ -11,20 +11,28 @@ double two_d_random(int n)
 	//The function should return the fraction of the visited $(x, y)$ coordinates inside (not including) the square.
     int x = 0;
     int y = 0;
-    double step = 0.0;
+    int step = 0.0;
     int visited[2*n+1][2*n+1];
     for(int i=0; i<(2*n+1); i++){
-        for(int j=0; j<(2*n+1); j++)
+        for(int j=0; j<(2*n+1); j++){
+            visited[i][j]=0;
+        }
     }
     while(x<n && x>-n && y<n && y>-n){
         int r = rand() % 4;
+        visited[x][y]++;
         if(r==0){y++;}
         if(r==1){x++;}
         if(r==2){y--;}
         if(r==3){x--;}
-        if 
-    return step/((2*n-1)*(2*n-1));
+        
     }
+    for(int i=0; i<(2*n); i++){
+        for(int j=0; j<(2*n); j++){
+            if(visited[i][j] >= 1){step++;}
+        }
+    }
+    return step*1.0/((2*n-1)*(2*n-1)*1.0);
 }
 
 //Do not change the code below
