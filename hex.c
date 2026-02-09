@@ -21,7 +21,6 @@ void dec_hex(int d, char hex[])
         char temp[80];
 		int i = 0;
 		
-		// Convert decimal to hex (digits will be in reverse order)
 		while (d > 0) {
 			int remainder = d % 16;
 			temp[i] = digits[remainder];
@@ -29,7 +28,6 @@ void dec_hex(int d, char hex[])
 			d = d / 16;
 		}
 		
-		// Reverse the digits and store in hex[]
 		for (int j = i - 1; j >= 0; j--) {
 			hex[k++] = temp[j];
 
