@@ -15,14 +15,26 @@ void dec_hex(int d, char hex[])
 	//It should not be hard to obtain the last digit of a hex number
 	//Then what?
 	//If we are getting the digits in a reverse order, what should we do in the end?
-	
+    if (d == 0) {
+		hex[k++] = '0';
+	} else {
+        char temp[80];
+		int i = 0;
+		
+		// Convert decimal to hex (digits will be in reverse order)
+		while (d > 0) {
+			int remainder = d % 16;
+			temp[i] = digits[remainder];
+			i++;
+			d = d / 16;
+		}
+		
+		// Reverse the digits and store in hex[]
+		for (int j = i - 1; j >= 0; j--) {
+			hex[k++] = temp[j];
 
-
-
-
-
-
-
+        }
+    }
 
 	//Make sure the last character is a zero so that we can print the string correctly
 	hex[k] = '\0';
