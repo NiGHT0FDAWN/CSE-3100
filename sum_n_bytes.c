@@ -18,15 +18,13 @@ unsigned sum_n_bytes(unsigned *p, int n)
 	//Note that the sum should be an unsigned integer
 	//This should has some ramifications on your code
 	//Only a few lines of code expected
-
-
-
-
-
-
-
-
-
+    unsigned sum = 0;
+    unsigned char *pointer = (unsigned char *)p;
+    
+    for (int i = 0; i < n; i++) {
+        sum += pointer[i];
+    }
+    return sum;
 }
 
 //Note how we use the command line arguments
