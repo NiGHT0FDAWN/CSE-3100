@@ -63,9 +63,9 @@ int main(int argc, char *argv[])
 	int bound = atoi(argv[2]);
 	int value = atoi(argv[3]);
 
-	oddSum(12,30,200);
-	oddSum(10,20,100);
-	oddSum(20,20,200);
-	//oddSum(count, bound, value);
+	//oddSum(12,30,200);
+	//oddSum(10,20,100);
+	//oddSum(20,20,200);
+	oddSum(count, bound, value);
 	return 0;
 }
