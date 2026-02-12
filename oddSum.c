@@ -3,13 +3,7 @@
 
 int oddSumHelp(int count, int bound, int value)
 {
-	//fill in your code below
 	
-
-
-
-
-}
 
 //Do not change the code below
 void oddSum(int count, int bound, int value)
