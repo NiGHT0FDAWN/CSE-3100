@@ -28,12 +28,15 @@ int oddSumHelp(int count, int bound, int value)
 
     int min = count * count;
     int max = count * (2 * bound - count + 1) / 2;
-    if (value < min || value > max) return 0;
+    if (value < min || value > max){
+		return 0;
+	}
 
     if (value >= bound) {
         nums[u++] = bound;
-        if (oddSumHelp(count - 1, bound - 2, value - bound))
+        if (oddSumHelp(count - 1, bound - 2, value - bound)){
             return 1;
+		}
         u--;
     }
 	if (oddSumHelp(count, bound - 2, value))
