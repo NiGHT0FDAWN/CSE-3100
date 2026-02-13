@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
         printf("n must be positive.");
         return 1;
     }
-    arr = (int*) malloc(n+1);
+    arr = (int*)malloc(n+1 * sizeof(int));
 
     fillSquares(n, arr);
     total = sum(n, arr);
