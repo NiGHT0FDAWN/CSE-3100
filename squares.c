@@ -19,7 +19,7 @@ int sum(int n, int* arr)
 void fillSquares(int n, int* arr)
 {
     int i;
-    for(i = 1; i <= n; i++)
+    for(i = 0; i <= n; i++)
         arr[i] = i*i;
 }
 
