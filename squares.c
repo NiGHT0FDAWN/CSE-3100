@@ -54,6 +54,6 @@ int main(int argc, char* argv[])
     fillSquares(n, arr);
     total = sum(n, arr);
     printf("total: %d\n", total);
-    free(arr)
+    free(arr);
     return 0;
 }
