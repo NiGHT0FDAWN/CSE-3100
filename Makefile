@@ -1,21 +1,14 @@
-# This is a comment line
-
-#define variables so it is easier to make changes
+# define more variables so it is easier to make changes
+# again, study the new varabiles and rules
 CC=gcc
 CFLAGS=-g -Wall -std=c99
-TARGETS=ex-factorial, catalan
+TARGETS=argvcat squares
 
-all: 
-	$(CC) $(CFLAGS) -o ex-factorial ex-factorial.c
-	$(CC) $(CFLAGS) -o catalan catalan.c
+all: $(TARGETS)
 
-ex-factorial: ex-factorial.c
-	$(CC) $(CFLAGS) -o ex-factorial ex-factorial.c
-
-catalan: catalan.c
-	$(CC) $(CFLAGS) -o catalan catalan.c
+#Static Pattern Rules
+$(TARGETS): % : %.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
-	rm -rf *.o *~ $(TARGETS) a.out
-
-
+	rm -rf *.o *~ $(TARGETS)
