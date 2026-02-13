@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
     for (int i = 1; i < argc; i ++) {
         free(s);
-        s = my_strcat(s, argv[i]);
+        char *s = my_strcat(s, argv[i]);
     }
 
     printf("%s\n", s);
