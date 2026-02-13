@@ -27,9 +27,10 @@ int main(int argc, char *argv[])
 {
     char    *s;
 
-    s = my_strcat(" ", argv[0]);
+    s = my_strcat("", argv[0]);
 
     for (int i = 1; i < argc; i ++) {
+        free(s);
         s = my_strcat(s, argv[i]);
     }
 
