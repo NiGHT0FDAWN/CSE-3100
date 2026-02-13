@@ -30,8 +30,9 @@ int main(int argc, char *argv[])
     s = my_strcat("", argv[0]);
 
     for (int i = 1; i < argc; i ++) {
+        char *ss = my_strcat(s, argv[i]);
         free(s);
-        char *s = my_strcat(s, argv[i]);
+        s = ss;
     }
 
     printf("%s\n", s);
