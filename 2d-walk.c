@@ -10,7 +10,7 @@ double two_d_random(int n)
 	//The random walk should stop once the x coordinate or y coordinate reaches $-n$ or $n$. 
 	//The function should return the fraction of the visited $(x, y)$ coordinates inside (not including) the square.
     int x = 0;
-    int y = 0; //dx dy keep track of 
+    int y = 0;
     int dx = 0;
     int dy = 0;
     int step = 0.0;
