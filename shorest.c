@@ -50,7 +50,18 @@ t_pair *shortest_dist_pair(int n, t_point points[])
 	double min_d = squared_dist(&(points[0]), &(points[1]));
 	p_pair -> p1 = points[0];
 	p_pair -> p2 = points[1];
-    
+    for (i = 0; i < n; i++) {
+		for (j = i + 1; j < n; j++) {
+			d = squared_dist(&points[i], &points[j]);
+			if (d < min_d) {
+				min_d = d;
+				p_pair->p1 = points[i];
+				p_pair->p2 = points[j];
+			}
+		}
+	}
+
+	return p_pair;
 	
 
 
