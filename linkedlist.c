@@ -145,6 +145,7 @@ node *reverse_list(node *head) {
         prev = curr;
         curr = next;
     }
+    free(curr);
     return prev;
     error_message(ERR_NOREVERSE);
     return head;
