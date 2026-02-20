@@ -1,13 +1,11 @@
-TARGETS=diffusion monopoly
-CC=gcc
-CFLAGS=-Wall -g -std=c99
+CC := gcc
+CFLAGS := -g -Wall -std=c99
+TARGETS := linkedlist-main
 
-all : $(TARGETS)
+all: $(TARGETS)
 
-$(TARGETS): %: %.c
+linkedlist-main: linkedlist-main.c linkedlist.c linkedlist.h
+	$(CC) $(CFLAGS) -o $@ $^
 
-clean: 
-	@rm -f $(TARGETS) a.out *.o
-
-sub:
-	@zip $${PWD##*/}.zip $(SRCS) Makefile
+clean:
+	rm -rf *.o $(TARGETS)
