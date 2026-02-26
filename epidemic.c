@@ -161,22 +161,18 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
         if (r == 0)
         {
             hosts[i].y = hosts[i].y + 1; 
-            break;
         }
         else if (r == 1)
         {
             hosts[i].x = hosts[i].x + 1; 
-                        break;
         }
         else if (r == 2)
         {
-            hosts[i].y = hosts[i].y - 1;
-                        break; 
+            hosts[i].y = hosts[i].y - 1; 
         }
         else
         {
-            hosts[i].x = hosts[i].x - 1;
-                        break; 
+            hosts[i].x = hosts[i].x - 1; 
         }
 
 		//buid linked list for I hosts
