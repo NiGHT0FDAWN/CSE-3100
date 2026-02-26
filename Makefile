@@ -1,11 +1,10 @@
-CC := gcc
-CFLAGS := -g -Wall -std=c99
-TARGETS := linkedlist-main
+TARGETS=epidemic
+CC=gcc
+CFLAGS=-Wall -g -std=c99
 
-all: $(TARGETS)
+all : $(TARGETS)
 
-linkedlist-main: linkedlist-main.c linkedlist.c linkedlist.h
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGETS): %: %.c
 
-clean:
-	rm -rf *.o $(TARGETS)
+clean: 
+	@rm -f $(TARGETS) a.out *.o
