@@ -9,7 +9,7 @@ enum TYPE {S, I, R};
 //this integer should be unique for every x, y pair in your grid
 int idx(int x, int y, int k)
 {
-
+    return (x + k) * (2 * k + 1) + (y + k);
 }
 
 typedef struct Host
@@ -30,7 +30,10 @@ typedef struct node_tag {
 //return a pointer to the created node
 node * create_node(THost host) 
 {
-
+    node *new = (node *)malloc(sizeof(node));
+    new->host = host;
+    new->next = NULL;
+    return new;
 }
 
 //add_first() should add to the beginning of a linked list
@@ -38,7 +41,8 @@ node * create_node(THost host)
 //note that it does not return a value 
 void add_first(node **head, node *newnode)
 {
-
+    newnode->next = *head;
+    *head = newnode;
 }
 
 
@@ -47,14 +51,22 @@ void add_first(node **head, node *newnode)
 //return a pointer to the removed content
 node * remove_first(node **head) 
 {
-
+    if (*head == NULL)
+        return NULL;
+    node *r = *head;
+    *head = (*head)->next;
+    r->next = NULL;
+    return r;
 }
 
 //remove all the nodes in the list
 //and free all the allocated memory
 void remove_all(node **head)
 {
-
+    while (*head != NULL) {
+        node *temp = remove_first(head);
+        free(temp);
+    }                               
 }
 
 //location_match checks whether a linked list contains
@@ -62,7 +74,13 @@ void remove_all(node **head)
 //return 1 if there is a match, 0 if not
 int location_match(node *head, THost host)
 {
-
+    node *c = head;
+    while (c != NULL) {
+        if (c->host.x == host.x && c->host.y == host.y)
+            return 1;
+        c = c->next;
+    }
+    return 0;
 }
 
 
@@ -121,7 +139,9 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 
 	//TODO: fill in code below
     //reset all linked lists
-
+    for (int i = 0; i < n_arr; i++) {
+        remove_all(&p_arr[i]);
+    }
 
 
 	for(int i = 0; i < m; i++)
@@ -130,13 +150,23 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		//finish the follow code
 		//0: up, 1: right, 2: down, 3: left
 		//TODO: update locations for all hosts
-		switch(r)
-		{
-			case 0: hosts[i].y = 
-			case 1: hosts[i].x =
-			case 2: hosts[i].y =
-			case 3: hosts[i].x =
-		}
+		
+        if (r == 0)
+        {
+            hosts[i].y = hosts[i].y + 1; 
+        }
+        else if (r == 1)
+        {
+            hosts[i].x = hosts[i].x + 1; 
+        }
+        else if (r == 2)
+        {
+            hosts[i].y = hosts[i].y - 1; 
+        }
+        else
+        {
+            hosts[i].x = hosts[i].x - 1; 
+        }
 
 		//buid linked list for I hosts
 		if(hosts[i].type == I)
