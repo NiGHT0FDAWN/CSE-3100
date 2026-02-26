@@ -4,7 +4,7 @@
 
 enum TYPE {S, I, R};
 
-//TODO: Implement idx
+//TOD: Implement idx
 //idx returns an integer to be used for hashing
 //this integer should be unique for every x, y pair in your grid
 int idx(int x, int y, int k)
@@ -128,16 +128,23 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
             int index = hash(idx(hosts[i].x, hosts[i].y, k)) % n_arr;
             if(location_match(p_arr[index], hosts[i]))
             {
-            	//TODO: fill in what should happen here (not long)
+            	{
+                    hosts[i].type = I;
+                    hosts[i].t = 0;
+                }
 			}
         }
 		else if(hosts[i].type == I)
         {
-           	//TODO: fill in what should happen here (not long)
+           	hosts[i].t++;
+            if(hosts[i].t == T)
+            {
+                hosts[i].type = R;
+            }
         }
     }
 
-	//TODO: fill in code below
+	//TOD: fill in code below
     //reset all linked lists
     for (int i = 0; i < n_arr; i++) {
         remove_all(&p_arr[i]);
@@ -149,7 +156,7 @@ int one_round(THost *hosts, int m, node *p_arr[], int n_arr, int k, int T)
 		int r = rand() % 4;
 		//finish the follow code
 		//0: up, 1: right, 2: down, 3: left
-		//TODO: update locations for all hosts
+		//TOD: update locations for all hosts
 		
         if (r == 0)
         {
