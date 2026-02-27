@@ -18,6 +18,7 @@ int removeFromSet(ParticleSet **p) {
     int v = t->mass;
     *p = t->next;
     return v;
+    free(t);
 }
 int isSetEmpty(ParticleSet *p) {
     if (p == NULL){
@@ -45,9 +46,9 @@ void printSet(ParticleSet *p) {
 
 void freeSet(ParticleSet **b) {
     while (*b != NULL) {
-        ParticleSet *temp = *b;
+        ParticleSet *t = *b;
         *b = (*b)->next;
-        free(temp);
+        free(t);
     }
 }
 
