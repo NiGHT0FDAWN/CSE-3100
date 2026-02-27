@@ -7,14 +7,29 @@ typedef struct particle {
 } ParticleSet;
 
 void addToSet(ParticleSet **p, int v) {
-    v->next = p[0];
+    ParticleSet *new = malloc(sizeof(ParticleSet));
+    new->mass = v;
+    new->next = *p;
+    *p = new;
 }
 
 int removeFromSet(ParticleSet **p) {
+    ParticleSet *t = *p;
+    int v = t->mass;
+    *p = t->next;
+    return v;
 }
-int isSetEmpty(ParticleSet *p) {}
+int isSetEmpty(ParticleSet *p) {
+    if (p == NULL){
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
-int topOfTheSet(ParticleSet *p) {}
+int topOfTheSet(ParticleSet *p) {
+    return p->mass;
+}
 
 void printSet(ParticleSet *p) {
     if (isSetEmpty(p)) {
@@ -28,9 +43,33 @@ void printSet(ParticleSet *p) {
     printf("\n");
 }
 
-void freeSet(ParticleSet **b) {}
+void freeSet(ParticleSet **b) {
+    while (*b != NULL) {
+        ParticleSet *temp = *b;
+        *b = (*b)->next;
+        free(temp);
+    }
+}
 
-ParticleSet *fight(int *particles, int count) {}
+ParticleSet *fight(int *particles, int count) {
+    ParticleSet *stack = NULL;
+    for (int i = 0; i < count; i++) {
+        int p = particles[i];
+        if (p>0){
+            addToSet(&stack, p);
+        } else {
+            while (!isSetEmpty(stack) && topOfTheSet(stack) > 0 && topOfTheSet(stack) < -p){
+                removeFromSet(&stack);
+            }
+            if (!isSetEmpty(stack) && topOfTheSet(stack) > 0 && topOfTheSet(stack) == -p){
+                removeFromSet(&stack);
+            } else if (isSetEmpty(stack) || topOfTheSet(stack) < 0){
+                addToSet(&stack,p);
+            }
+        }
+    }
+    return stack;
+}
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
