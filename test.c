@@ -1,15 +1,14 @@
 #include <stdio.h>
+typedef struct {
+    int id;
+    int points;
+} Questions;
 
-int main()
-{
-    printf("-->");
-    char s[] = "new string!";
-    int i=sizeof(s)-1;
-    printf("%c",s[i]);
-    printf("abcds\n");
-    int c[26] = {0,0,0};
-    for (int j = 0; j<sizeof(c);j++){
-        printf("%d ",c[j]);
-    }
-    printf("\n");
+int main() {
+    Questions * q1;
+    q1->id = 1;
+    q1->points = 3;
+
+    printf("%d\n",q1->points);
+    return 0;
 }
