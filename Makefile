@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -g -std=c99
-TARGETS=ziplist common
+TARGETS=place survival
 
 all: $(TARGETS)
 
