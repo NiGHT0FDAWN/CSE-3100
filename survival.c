@@ -87,6 +87,7 @@ int main(int argc, char *argv[]) {
 
     ParticleSet *b = fight(particles, count);
     printSet(b);
-    
+    free(particles);
+    free(b);
     return 0;
 }
