@@ -27,19 +27,20 @@ int main(int argc, char ** argv)
     child = fork();
     if (child == -1){
         perror("fork()");
-        return -1;
+        return 1;
     } else if (child == 0){
         execlp(argv[1], argv[1], argv[2], NULL);
         perror("execlp()");
     }
     waitpid(child, &exitStatus, 0);
     printf("exited=%d exitstatus=%d", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    
     child = fork();
     if (child == -1){
         perror("fork()");
-        return -1;
+        return 1;
     } else if (child == 0){
-        execvp(argv[3], &argv[4]);
+        execvp(argv[3], &argv[3]);
         perror("execvp()");
     }
     waitpid(child, &exitStatus, 0);
