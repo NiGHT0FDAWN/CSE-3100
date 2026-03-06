@@ -39,7 +39,7 @@ int main(int argc, char ** argv)
         perror("fork()");
         return -1;
     } else {
-        execvp(argv[3], &argv[3]);
+        execvp(argv[3], &argv[4]);
         perror("execvp()");
     }
     waitpid(child, &exitStatus, 0);
