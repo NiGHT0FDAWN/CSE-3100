@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
         perror("execlp()");
     }
     waitpid(child, &exitStatus, 0);
-    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    printf("%d %d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
     child = fork();
     if (child == -1){
         perror("fork()");
@@ -42,9 +42,8 @@ int main(int argc, char ** argv)
         execvp(argv[3], &argv[3]);
         perror("execvp()");
     }
-
     waitpid(child, &exitStatus, 0);
-    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    printf("%d %d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
     
     
     return 0;
