@@ -31,6 +31,7 @@ int main(int argc, char ** argv)
     } else if (child == 0){
         execlp(argv[1], argv[1], argv[2], NULL);
         perror("execlp()");
+        return -1;
     }
     
     pid_t child2;
@@ -42,9 +43,10 @@ int main(int argc, char ** argv)
     } else if (child2 == 0){
         execvp(argv[3], &argv[3]);
         perror("execvp()");
+        return -1;
     }
     waitpid(child, &exitStatus, 0);
-    printf("exited=%d exitstatus=%d", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
     waitpid(child2, &exitStatus2, 0);
     printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus2), WEXITSTATUS(exitStatus2));
     
