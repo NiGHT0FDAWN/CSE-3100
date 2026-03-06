@@ -35,16 +35,18 @@ int main(int argc, char ** argv)
     waitpid(child, &exitStatus, 0);
     printf("exited=%d exitstatus=%d", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
     
-    child = fork();
-    if (child == -1){
+    pid_t child2;
+    int exitStatus2;
+    child2 = fork();
+    if (child2 == -1){
         perror("fork()");
         return 1;
-    } else if (child == 0){
+    } else if (child2 == 0){
         execvp(argv[3], &argv[3]);
         perror("execvp()");
     }
-    waitpid(child, &exitStatus, 0);
-    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    waitpid(child2, &exitStatus2, 0);
+    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus2), WEXITSTATUS(exitStatus2));
     
     
     return 0;
