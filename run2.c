@@ -20,9 +20,10 @@ int main(int argc, char ** argv)
     if (child == -1){
         perror("fork()");
         return -1;
-    } else {
+    } else if (child == 0){
         execlp(argv[1], argv[1], argv[2], NULL);
         perror("execlp()");
+        return 1;
     }
     waitpid(child, &exitStatus, 0);
     printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
@@ -33,7 +34,7 @@ int main(int argc, char ** argv)
     } else if (child == 0){
         execvp(argv[3], &argv[3]);
         perror("execvp()");
-        return -1;
+        return 1;
     }
     waitpid(child, &exitStatus, 0);
     printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
