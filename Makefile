@@ -1,11 +1,12 @@
+TARGETS=run2
+SRCS=$(patsubst %,%.c,$(TARGETS))
 CC=gcc
-CFLAGS=-Wall -g -std=c99
-TARGETS=place survival
+CFLAGS= -Wall -g -std=c99
 
-all: $(TARGETS)
+all : $(TARGETS)
 
 $(TARGETS): %: %.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-clean:
-	rm -f *.o *~ $(TARGETS) a.out
+clean: 
+	@rm -f $(TARGETS) *.o a.out
