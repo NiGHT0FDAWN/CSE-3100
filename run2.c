@@ -28,7 +28,7 @@ int main(int argc, char ** argv)
     if (child == -1){
         perror("fork()");
         return -1;
-    } else {
+    } else if (child == 0){
         execlp(argv[1], argv[1], argv[2], NULL);
         perror("execlp()");
     }
@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
     if (child == -1){
         perror("fork()");
         return -1;
-    } else {
+    } else if (child == 0){
         execvp(argv[3], &argv[4]);
         perror("execvp()");
     }
