@@ -16,6 +16,36 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    // TODO
+    child = fork();
+    if (child == -1){
+        perror("fork()");
+        return -1;
+    } else {
+        execlp(argv[1], argv[1], argv[2], NULL);
+        perror("execlp()");
+    }
+    child = fork();
+    if (child == -1){
+        perror("fork()");
+        return -1;
+    } else {
+        execlp(argv[1], argv[1], argv[2], NULL);
+        perror("execlp()");
+    }
+    waitpid(child, &exitStatus, 0);
+    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    child = fork();
+    if (child == -1){
+        perror("fork()");
+        return -1;
+    } else {
+        execvp(argv[3], &argv[3]);
+        perror("execvp()");
+    }
+
+    waitpid(child, &exitStatus, 0);
+    printf("exited=%d exitstatus=%d\n", WIFEXITED(exitStatus), WEXITSTATUS(exitStatus));
+    
+    
     return 0;
 }
