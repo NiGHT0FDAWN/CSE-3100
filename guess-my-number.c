@@ -104,14 +104,17 @@ void guess_my_number(int seed)
 //
 // This function should not return.
 // This function does not print any characters, except for error messages.
-void    child_main(int fdp[], int fdc[], int seed)
+void child_main(int fdp[], int fdc[], int seed)
 {
-    gmn_t   gmn;
+    gmn_t gmn;
 
     gmn_init(&gmn, seed);
 
     // TODO
-    //  close unused file descriptors
+    close(fdp[1]);
+    close(fdc[0]);
+
+
     //  send max value to the parent 
     //  repeat the following until guess from parent is correct 
     //      wait for a guess from parent 
