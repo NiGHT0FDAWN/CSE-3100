@@ -88,7 +88,7 @@ void guess_my_number(int seed)
             min = guess + 1;
         else if(result < 0)
             max = guess - 1;
-    } while (result != 0);
+    } while (result != 0){};
 
     // print out the final message
     fputs(gmn_get_message(&gmn), stdout);
@@ -131,7 +131,7 @@ void child_main(int fdp[], int fdc[], int seed)
     exit(EXIT_SUCCESS);
 }
 
-void    print_file_descriptors(int child);
+void print_file_descriptors(int child);
 
 int main(int argc, char *argv[])
 {
@@ -204,8 +204,8 @@ int main(int argc, char *argv[])
         // TODO
         //     send guess to the child
         //     wait for the result from the child
-        write(fdp[1], &guess, sizeof(int))
-        read(fdc[0], &result, sizeof(int))
+        write(fdp[1], &guess, sizeof(int));
+        read(fdc[0], &result, sizeof(int));
         if (result > 0)
         {
             min = guess + 1;
