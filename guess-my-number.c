@@ -114,14 +114,19 @@ void child_main(int fdp[], int fdc[], int seed)
     close(fdp[1]);
     close(fdc[0]);
 
-
-    //  send max value to the parent 
-    //  repeat the following until guess from parent is correct 
-    //      wait for a guess from parent 
-    //      call gmn_check() 
-    //      send the result to parent
-    //  send the final message back (as a string) 
-    //  close all pipe file descriptors
+    int max_val = gmn_get_max();
+    int guess, result;
+    while (1) {
+        read(fdp[0], &guess, sizeof(int));
+        result = gmn_check(&gmn, guess);
+        write(fdc[1], &result, sizeof(int));
+        if (result == 0) {
+            break;
+    }
+    char *msg = gmn_get_message(&gmn);
+    int len = strlen(msg);
+    close(fdp[0]);
+    close(fdc[1]);
 
     exit(EXIT_SUCCESS);
 }
@@ -188,8 +193,9 @@ int main(int argc, char *argv[])
     int result;
 
     // TODO
-    //      close unused pipe file descriptor
-    //      get max from the child
+    close(fdp[0]);
+    close(fdc[1]);
+    read(fdc[0], &max, sizeof(int));
     
     do { 
         guess = (min + max)/2;
@@ -198,6 +204,17 @@ int main(int argc, char *argv[])
         // TODO
         //     send guess to the child
         //     wait for the result from the child
+        write(fdp[1], &guess, sizeof(int))
+        read(fdc[0], &result, sizeof(int))
+        if (result > 0)
+        {
+            min = guess + 1;
+        }
+        else if (result < 0)
+        {
+            max = guess - 1;
+        }
+        } while (result != 0);
 
         if (result > 0)
             min = guess + 1;
@@ -209,9 +226,12 @@ int main(int argc, char *argv[])
     fflush(stdout);
 
     // TODO
-    //      receive the final message and print it to stdout
-    //      close all pipe file descriptors
-    //wait for the child process to finish
+    char ch;
+    while (read(fdc[0], &ch, 1) == 1) {
+        putchar(ch);
+        if (ch == '\n')
+            break;
+    }
     wait(NULL);
     return 0;
 }
