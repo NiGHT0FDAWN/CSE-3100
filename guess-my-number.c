@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
         }
         //     wait for the result from the child
         if (read(fdc[PIPEFD_READ], &result, sizeof(int)) !+ sizeof(int)){
-            die("parent: failed to read result")
+            die("parent: failed to read result");
         }
 
         if (result > 0)
