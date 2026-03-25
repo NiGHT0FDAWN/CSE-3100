@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
             die("parent: failed to write guess");
         }
         //     wait for the result from the child
-        if (read(fdc[PIPEFD_READ], &result, sizeof(int)) !+ sizeof(int)){
+        if (read(fdc[PIPEFD_READ], &result, sizeof(int)) != sizeof(int)){
             die("parent: failed to read result");
         }
 
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
         die("parent: failed to read message length");
     }
     char *msg = malloc(len);
-    if (read(fdc[PIPEFD_READ], msg, len) !+ len){
+    if (read(fdc[PIPEFD_READ], msg, len) != len){
         die("parent: failed to read message");
     }
     printf("%s", msg);
