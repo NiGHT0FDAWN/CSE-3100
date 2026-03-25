@@ -88,7 +88,7 @@ void guess_my_number(int seed)
             min = guess + 1;
         else if(result < 0)
             max = guess - 1;
-    } while (result != 0){};
+    } while (result != 0);
 
     // print out the final message
     fputs(gmn_get_message(&gmn), stdout);
@@ -104,34 +104,55 @@ void guess_my_number(int seed)
 //
 // This function should not return.
 // This function does not print any characters, except for error messages.
-void child_main(int fdp[], int fdc[], int seed)
+void    child_main(int fdp[], int fdc[], int seed)
 {
-    gmn_t gmn;
+    gmn_t   gmn;
 
     gmn_init(&gmn, seed);
 
     // TODO
-    close(fdp[1]);
-    close(fdc[0]);
-
-    int max_val = gmn_get_max();
+    //  close unused file descriptors
+    close(fdp[PIPEFD_WRITE]);
+    close(fdc[PIPEFD_READ]);
+    //  send max value to the parent 
+    int max = gmn_get_max();
+    if (write(fdc[PIPEFD_WRITE], &max, sizeof(int)) != sizeof(int)) {
+        die("child: failed to write max value");
+    }
+    //  repeat the following until guess from parent is correct 
     int guess, result;
-    while (1) {
-        read(fdp[0], &guess, sizeof(int));
+    while (1){
+        if (read(fdp[PIPEFD_READ], &guess, sizeof(int)) != sizeof(int)) {
+            die("child: failed to read guess");
+        }
         result = gmn_check(&gmn, guess);
-        write(fdc[1], &result, sizeof(int));
+        if (write(fdc[PIPEFD_WRITE], &result, sizeof(int)) != sizeof(int)) {
+            die("child: failed to write max value");
+        }
         if (result == 0) {
             break;
+        }
     }
     char *msg = gmn_get_message(&gmn);
-    int len = strlen(msg);
-    close(fdp[0]);
-    close(fdc[1]);
+    int len = strlen(msg) + 1;
+    if (write(fdc[PIPEFD_WRITE], &len, sizeof(int)) != sizeof(int))
+        die("child: failed to write message length");
+    if (write(fdc[PIPEFD_WRITE], msg, len) != len)
+        die("child: failed to write message");
+
+        //
+    close(fdp[PIPEFD_READ]);
+    close(fdc[PIPEFD_WRITE]);
+    //      wait for a guess from parent 
+    //      call gmn_check() 
+    //      send the result to parent
+    //  send the final message back (as a string) 
+    //  close all pipe file descriptors
 
     exit(EXIT_SUCCESS);
 }
 
-void print_file_descriptors(int child);
+void    print_file_descriptors(int child);
 
 int main(int argc, char *argv[])
 {
@@ -193,9 +214,13 @@ int main(int argc, char *argv[])
     int result;
 
     // TODO
-    close(fdp[0]);
-    close(fdc[1]);
-    read(fdc[0], &max, sizeof(int));
+    //      close unused pipe file descriptor
+    close(fdp[PIPEFD_READ]);
+    close(fdc[PIPEFD_WRITE]);
+    //      get max from the child
+    if (read(fdc[PIPEFD_READ], &max, sizeof(int)) != sizeof(int)){
+        die("parent: failed to read max");
+    }
     
     do { 
         guess = (min + max)/2;
@@ -203,18 +228,13 @@ int main(int argc, char *argv[])
 
         // TODO
         //     send guess to the child
+        if (write(fdp[PIPEFD_WRITE], &guess, sizeof(int)) != sizeof(int)){
+            die("parent: failed to write guess");
+        }
         //     wait for the result from the child
-        write(fdp[1], &guess, sizeof(int));
-        read(fdc[0], &result, sizeof(int));
-        if (result > 0)
-        {
-            min = guess + 1;
+        if (read(fdc[PIPEFD_READ], &result, sizeof(int)) !+ sizeof(int)){
+            die("parent: failed to read result")
         }
-        else if (result < 0)
-        {
-            max = guess - 1;
-        }
-        } while (result != 0);
 
         if (result > 0)
             min = guess + 1;
@@ -224,15 +244,21 @@ int main(int argc, char *argv[])
 
     // flush stdout buffer
     fflush(stdout);
-
+    int len;
     // TODO
-    char ch;
-    while (read(fdc[0], &ch, 1) == 1) {
-        putchar(ch);
-        if (ch == '\n')
-            break;
+    //      receive the final message and print it to stdout
+    if (read(fdc[PIPEFD_READ], &len, sizeof(int)) != sizeof(int)){
+        die("parent: failed to read message length");
     }
+    char *msg = malloc(len);
+    if (read(fdc[PIPEFD_READ], msg, len) !+ len){
+        die("parent: failed to read message");
+    }
+    printf("%s", msg);
+    //      close all pipe file descriptors
+    close(fdp[PIPEFD_WRITE]);
+    close(fdc[PIPEFD_READ]);
+    //wait for the child process to finish
     wait(NULL);
     return 0;
 }
-
