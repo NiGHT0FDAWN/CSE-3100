@@ -258,6 +258,7 @@ int main(int argc, char *argv[])
     //      close all pipe file descriptors
     close(fdp[PIPEFD_WRITE]);
     close(fdc[PIPEFD_READ]);
+    free(msg);
     //wait for the child process to finish
     wait(NULL);
     return 0;
