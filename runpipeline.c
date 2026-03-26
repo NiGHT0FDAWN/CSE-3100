@@ -45,37 +45,17 @@ void start_program(Program *programs, int num_programs, int cur)
 {
     // TODO
     // start a program. This function does not wait for the child process to finish.
-    int pid = fork();
-    if (pid < 0) {
-        die("fork() failed.");
-    }
-    // This function needs to fork, redirect stdin/stdout, and then upgrade the child process into the program specified.
-    if (pid == 0) {
-        if (programs[cur].fd_in != -1) {
-            if (dup2(programs[cur].fd_in, FD_STDIN) == -1) {
-                die("dup2() failed for stdin");
-            }
-        }
-        if (programs[cur].fd_in != -1) {
-            if (dup2(programs[cur].fd_in, FD_STDIN) == -1) {
-                die("dup2() failed for stdin");
-            }
-        }
 
-    
+    // This function needs to fork, redirect stdin/stdout, and then upgradethe child process into the program specified.
+
     // If pipes are not created earlier, create pipes.
 
     // Close file descriptors that are not needed, in both parent and child processes.
-    for (int fd = 3; fd < 1024; fd++) {
-        close(fd);
-    }
+
     // If a child process is created successfully, save its pid in the corresponding Program structure. 
+
     // If any system call fails, call die() to exit. For example, die("fork() failed.") It will be messy if some programs are already started.
-    execvp(programs[cur].argv[0], programs[cur].argv);
-    die("execvp() failed.");
-    } else {
-        programs[cur].pid = pid;
-    }
+
     // Parameters:
     //     programs: an array of Program structures.
     //     num_programs: number of programs in the array.
@@ -117,26 +97,12 @@ void prepare_pipes(Program *programs, int num_programs)
     // This function creates pipes to be used for connecting two pipeline stages.
     // You can create all pipes here, or you can create pipes when they are needed in start_program().
     // If you decide to create pipes in start_program(), leave this function empty.
-    for (int i = 0; i < num_programs - 1; i++) {
-        int pipefd[2];
-        if (pipe(pipefd) == -1){
-            die("pipe() failed.");
-        }
-        programs[i].fd_out = pipefd[PIPEFD_WRITE];
-        programs[i+1].fd_in = pipefd[PIPEFD_READ];
-    }
    
     // Paramters:
     //  programs: an array of Program structures.
     //  num_programs: number of programs in the array.
     // Return value:
     //  This function does not return a value. If pipe() fails,  call the following function to exit from the program. die("pipe() failed.");
-    if (num_programs > 0) {
-        if (programs[0].fd_in == -1)
-            programs[0].fd_in = FD_STDIN;
-        if (programs[num_programs-1].fd_out == -1)
-            programs[num_programs-1].fd_out = FD_STDOUT;
-    }
 }
 
 /*********************************************************/
