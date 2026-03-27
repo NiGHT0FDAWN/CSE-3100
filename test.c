@@ -56,11 +56,11 @@ int main() {
     // close(fd);
     // printf(".\n");
     
-    int fd = open("testtxt.txt",O_RDONLY);
-    char buff[10];
-    int v = read(fd,buff,10);
-    printf(". %d",v);
-    
+    // int fd = open("testtxt.txt", O_RDWR);
+    // char buff[10];
+    // int v = read(fd,buff,10);
+    // printf(". %d", v);
+    read("testtxt.txt", 15, sizeof(char));
     
     return 0;
 }
