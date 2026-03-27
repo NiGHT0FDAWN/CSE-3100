@@ -1,4 +1,4 @@
-TARGETS=runpipeline
+TARGETS=runpipeline toupper game
 SRCS=$(patsubst %,%.c,$(TARGETS))
 CC=gcc
 CFLAGS= -Wall -g -std=c99
