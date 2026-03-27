@@ -132,5 +132,4 @@ int main(int argc, char* argv[])
     close(pd1p[PR]);
     close(pdp2[PW]);
     close(pd2p[PR]);
-
 }
