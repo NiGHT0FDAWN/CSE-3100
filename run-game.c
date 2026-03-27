@@ -42,7 +42,7 @@ void run_simulation(int n, double p) {
         int v;
         // TODO
         // complete the following line of code
-        while (read_int(pd2[0], &v) != 0) {
+        while (read_int(pd2[0], &v) > 0) {
             // TODO
             // fill in code below
             int flip = coin_flip(p);
@@ -90,7 +90,7 @@ void run_simulation(int n, double p) {
         int v;
         // TODO
         // complete the following line of code
-        while (read_int(pd4[0], &v) != 0) {
+        while (read_int(pd4[0], &v) > 0) {
         // TODO
         // fill in code below
             int flip = coin_flip(p);
