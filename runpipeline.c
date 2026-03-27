@@ -45,7 +45,61 @@ void start_program(Program *programs, int num_programs, int cur)
 {
     // TODO
     // start a program. This function does not wait for the child process to finish.
+    // Set up file descriptors for this program
+    if (cur == 0) {
+        programs[cur].fd_in = FD_STDIN; // first program reads from stdin
+    }
+    // else fd_in already set from previous pipe
 
+    if (cur == num_programs - 1) {
+        programs[cur].fd_out = FD_STDOUT; // last program writes to stdout
+    } else {
+        int pipefd[2];
+        if (pipe(pipefd) == -1) {
+            die("pipe() failed.");
+        }
+        programs[cur].fd_out = pipefd[PIPEFD_WRITE];   // write end for current program
+        programs[cur+1].fd_in = pipefd[PIPEFD_READ];  // read end for next program
+    }
+
+    pid_t pid = fork();
+    if (pid == -1) {
+        die("fork() failed.");
+    }
+
+    if (pid == 0) {  // child process
+        // Redirect stdin and stdout
+        if (programs[cur].fd_in != FD_STDIN) {
+            dup2(programs[cur].fd_in, FD_STDIN);
+            close(programs[cur].fd_in);
+        }
+        if (programs[cur].fd_out != FD_STDOUT) {
+            dup2(programs[cur].fd_out, FD_STDOUT);
+            close(programs[cur].fd_out);
+        }
+
+        // Close all other file descriptors that are not needed
+        for (int i = 0; i < num_programs; i++) {
+            if (i == cur) continue;
+            if (programs[i].fd_in > 2) close(programs[i].fd_in);
+            if (programs[i].fd_out > 2) close(programs[i].fd_out);
+        }
+
+        // Execute the program
+        execvp(programs[cur].argv[0], programs[cur].argv);
+        // If execvp returns, it must have failed
+        die("execvp() failed.");
+    } else {  // parent process
+        programs[cur].pid = pid;
+
+        // Close the file descriptors that are no longer needed in the parent
+        if (cur > 0 && programs[cur].fd_in > 2) {
+            close(programs[cur].fd_in);
+        }
+        if (cur < num_programs - 1 && programs[cur].fd_out > 2) {
+            close(programs[cur].fd_out);
+        }
+    }
     // This function needs to fork, redirect stdin/stdout, and then upgradethe child process into the program specified.
 
     // If pipes are not created earlier, create pipes.
@@ -85,7 +139,9 @@ int wait_on_program(Program *prog)
     if (prog->pid < 0)
         return -1;
 
-    // TODO
+    if (waitpid(prog->pid, &exitStatus, 0) == -1)
+        return -1;
+
     return WEXITSTATUS(exitStatus);
 }
 
