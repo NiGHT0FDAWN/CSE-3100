@@ -42,14 +42,16 @@ void run_simulation(int n, double p) {
         int v;
         // TODO
         // complete the following line of code
-        while (read_int(pd2[0], &v) > 0) {
+        while (read_int(pd2[0], &v) != 0) {
             // TODO
             // fill in code below
             int flip = coin_flip(p);
             if (write(pd1[1], &flip, sizeof(int)) != sizeof(int)){
                 perror("Error.");
+                close(pd1[1]);
+                close(pd2[0]);
                 exit(-1);
-            }
+            } // write_int(pd1[1], coin_flip(p)); this is the official answer
         }
         // TODO
         // fill in code below
@@ -85,19 +87,24 @@ void run_simulation(int n, double p) {
         close(pd3[0]);
         close(pd4[1]);
 
+        close(pd1[0]);
+        close(pd2[1]);
+
         srand(3504);
 
         int v;
         // TODO
         // complete the following line of code
-        while (read_int(pd4[0], &v) > 0) {
+        while (read_int(pd4[0], &v) != 0) {
         // TODO
         // fill in code below
             int flip = coin_flip(p);
             if (write(pd3[1], &flip, sizeof(int)) != sizeof(int)){
                 perror("Error.");
+                close(pd3[1]);
+                close(pd4[0]);
                 exit(-1);
-            }
+            } // write_int(pd3[1], coin_flip(p)); official answer
         }
         close(pd3[1]);
         close(pd4[0]);
@@ -132,6 +139,5 @@ void run_simulation(int n, double p) {
     close(pd4[1]);
     close(pd1[0]);
     close(pd3[0]);
-    wait(NULL);
-    wait(NULL);
+
 }

@@ -10,6 +10,8 @@ typedef struct {
 } Questions;
 
 int main() {
+    // USE valgrind --track-fds=yes ./file args
+    
     // Questions * q1;
     // q1->id = 1;
     // q1->points = 3;
@@ -23,7 +25,6 @@ int main() {
     // } else {
     //     wait(NULL);
     // }
-    // return 0;
 
     // int a = 0;
     // pid_t pid = fork();
@@ -31,6 +32,7 @@ int main() {
     //     a++;
     // }
     // a--;
+
     // if (pid) wait (NULL);
     // printf("a = %d\n",a);
     // return 0;
@@ -43,7 +45,6 @@ int main() {
     //     count++;
     // }
     // printf("%d\n",count);
-    // return 0;
     
     // printf("...\n");
     // int fd = open("dup2-output.txt", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
@@ -54,7 +55,12 @@ int main() {
     // dup2(fd,1);
     // close(fd);
     // printf(".\n");
-    // return 0;
-
     
+    int fd = open("testtxt.txt",O_RDONLY);
+    char buff[10];
+    int v = read(fd,buff,10);
+    printf(". %d",v);
+    
+    
+    return 0;
 }
