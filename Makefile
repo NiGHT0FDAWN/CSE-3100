@@ -1,15 +1,26 @@
-TARGETS=runpipeline toupper game
-SRCS=$(patsubst %,%.c,$(TARGETS))
+TARGET1=test-mmul
+OBJS1=test-mmul.o matrix.o mmul.o 
+SRCS1=$(patsubst %.o,%.c,$(OBJS1))
+HEADERS1=matrix.h
+
+TARGET2=printing
+SRCS2=$(patsubst %,%.c,$(TARGET2))
+
+TARGETS=$(TARGET1) $(TARGET2)
 CC=gcc
-CFLAGS= -Wall -g -std=c99
+CFLAGS= -Wall -pthread -g -std=c99
 
 all : $(TARGETS)
 
-$(TARGETS): %: %.c
-	$(CC) $(CFLAGS) -o $@ $<
+$(TARGET1): $(OBJS1)
+	$(CC) $(CFLAGS) -o $@ $^
 
 clean: 
-	@rm -f $(TARGETS) *.o a.out seqOutput shOutput pipeOutput
+	@rm -f $(OBJS1) $(TARGETS)
 
-ultraclean: clean
-	@rm -f *.dat
+mmul.o: $(@:.o=.c) $(HEADERS1)
+
+matrix.o: $(@:.o=.c) $(HEADERS1) 
+
+test-mmul.o: $(@:.o=.c) $(HEADERS1)
+

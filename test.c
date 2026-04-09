@@ -60,7 +60,23 @@ int main() {
     // char buff[10];
     // int v = read(fd,buff,10);
     // printf(". %d", v);
-    read("testtxt.txt", 15, sizeof(char));
+
+    // execl("/usr/bin/zip", "zip", "files.zip", "a.txt", "b.c", "b", NULL);
+    // execlp("zip", "zip", "files.zip", "a.txt", "b.c", "b", NULL);
+    // execle("zip", "zip", "files.zip", "a.txt", "b.c", "b", NULL);
+    // char *argv[]={"files.zip", "files.zip", "a.txt", "b.c", "b", NULL};
+    // execv("/usr/bin/zip", argv);
+    // execvp("zip", argv);
+    // execvpe("zip", argv);
     
+    // int fd = open("a.txt", O_RDWR | O_CREAT);
+    // int dfd = dup(fd);
+    // dup2(fd, 0);
+    // dup2(dfd, 1);
+    // char *s1 = "Hello";
+    // close(fd);
+    char *load[16];
+    read("a.txt", &load, sizeof(int));
+    printf("%s", load);
     return 0;
 }
