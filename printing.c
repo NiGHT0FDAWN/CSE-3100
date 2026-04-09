@@ -139,28 +139,6 @@ void printer_single(printer_t *pprinter)
 void * printer_main(void * arg)
 {
     // TODO
-    printer_t *pprinter = (printer_t *) arg;
-    job_queue_t *jq = pprinter->jq;
-    pprinter->njobs = 0;
-
-    while (1) {
-        int remaining;
-        int job;
-
-        // Lock before accessing the shared queue
-        pthread_mutex_lock(&jq->mutex);
-        remaining = q_num_jobs(jq);
-        if (remaining <= 0) {
-            pthread_mutex_unlock(&jq->mutex);
-            break;
-        }
-        job = q_fetch_job(jq, pprinter->id);
-        pthread_mutex_unlock(&jq->mutex);
-
-        // Simulate printing outside the critical section
-        print_job(job);
-        pprinter->njobs++;
-    }
     return arg;
 }
 
@@ -221,20 +199,6 @@ int main(int argc, char *argv[])
      *      wait for other threads
      *  Also, properly init and desctroy mutex.
      *  */
-    for (int i = 0; i < num_printers; i++) {
-        printers[i].id = i;
-        printers[i].jq = &job_queue;
-        printers[i].njobs = 0;
-        rv = pthread_create(&printers[i].thread_id, NULL, printer_main, &printers[i]);
-        check_pthread_return(rv, "pthread_create");
-    }
-
-    for (int i = 0; i < num_printers; i++) {
-        rv = pthread_join(printers[i].thread_id, NULL);
-        check_pthread_return(rv, "pthread_join");
-    }
-
-    pthread_mutex_destroy(&job_queue.mutex);
 
     q_destroy(&job_queue);
 

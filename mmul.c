@@ -21,12 +21,8 @@ static void * thread_main(void * p_arg)
     TMatrix *n = arg->n;
     TMatrix *t = arg->t;
 
-    unsigned int total_rows = m->nrows;
-    unsigned int rows_per_thread = total_rows / NUM_THREADS;
-    unsigned int start_row = id * rows_per_thread;
-    unsigned int end_row = (id == NUM_THREADS - 1) ? total_rows : (id + 1) * rows_per_thread;
-
-    for (unsigned int i = start_row; i < end_row; i++) {
+    // Each thread computes rows where row_index % NUM_THREADS == id
+    for (unsigned int i = id; i < m->nrows; i += NUM_THREADS) {
         for (unsigned int j = 0; j < n->ncols; j++) {
             TElement sum = 0.0;
             for (unsigned int k = 0; k < m->ncols; k++) {
@@ -58,20 +54,21 @@ TMatrix * mulMatrix_thread(TMatrix *m, TMatrix *n)
     // TODO
     pthread_t threads[NUM_THREADS];
     thread_arg_t args[NUM_THREADS];
-    int rv;
 
+    // Create worker threads
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
         args[i].id = i;
         args[i].m = m;
         args[i].n = n;
         args[i].t = t;
-        rv = pthread_create(&threads[i], NULL, thread_main, &args[i]);
-        check_pthread_return(rv, "pthread_create");
+        int ret = pthread_create(&threads[i], NULL, thread_main, &args[i]);
+        check_pthread_return(ret, "pthread_create failed");
     }
 
+    // Wait for all threads to finish
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
-        rv = pthread_join(threads[i], NULL);
-        check_pthread_return(rv, "pthread_join");
+        int ret = pthread_join(threads[i], NULL);
+        check_pthread_return(ret, "pthread_join failed");
     }
     return t;
 }
