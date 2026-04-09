@@ -139,6 +139,30 @@ void printer_single(printer_t *pprinter)
 void * printer_main(void * arg)
 {
     // TODO
+    printer_t *printer = (printer_t *) arg;
+    job_queue_t *jq = printer->jq;
+    int done = 0;
+    printer->njobs = 0;
+
+    while (!done) {
+        int job;
+        int remaining;
+
+        check_pthread_return(pthread_mutex_lock(&jq->mutex), "pthread_mutex_lock");
+
+        remaining = q_num_jobs(jq);
+        if (remaining <= 0) {
+            done = 1;
+            check_pthread_return(pthread_mutex_unlock(&jq->mutex), "pthread_mutex_unlock");
+            continue;
+        }
+
+        job = q_fetch_job(jq, printer->id);
+        check_pthread_return(pthread_mutex_unlock(&jq->mutex), "pthread_mutex_unlock");
+
+        print_job(job);
+        printer->njobs++;
+    }
     return arg;
 }
 
@@ -199,7 +223,24 @@ int main(int argc, char *argv[])
      *      wait for other threads
      *  Also, properly init and desctroy mutex.
      *  */
+    
+     check_pthread_return(pthread_mutex_init(&job_queue.mutex, NULL), "pthread_mutex_init");
 
+    for (int i = 0; i < num_printers; i++) {
+        printers[i].id = i;
+        printers[i].jq = &job_queue;
+        printers[i].njobs = 0;
+        check_pthread_return(
+            pthread_create(&printers[i].thread_id, NULL, printer_main, &printers[i]),
+            "pthread_create"
+        );
+    }
+
+    for (int i = 0; i < num_printers; i++) {
+        check_pthread_return(pthread_join(printers[i].thread_id, NULL), "pthread_join");
+    }
+
+    check_pthread_return(pthread_mutex_destroy(&job_queue.mutex), "pthread_mutex_destroy");
     q_destroy(&job_queue);
 
     print_printer_summary(printers, num_printers);

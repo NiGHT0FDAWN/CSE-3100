@@ -16,16 +16,27 @@ static void * thread_main(void * p_arg)
 {
     // TODO
     thread_arg_t *arg = (thread_arg_t *) p_arg;
-    unsigned int id = arg->id;
     TMatrix *m = arg->m;
     TMatrix *n = arg->n;
     TMatrix *t = arg->t;
+    unsigned int nrows = m->nrows;
+    unsigned int ncols = m->ncols;
+    unsigned int ncols2 = n->ncols;
+    unsigned int id = arg->id;
 
-    // Each thread computes rows where row_index % NUM_THREADS == id
-    for (unsigned int i = id; i < m->nrows; i += NUM_THREADS) {
-        for (unsigned int j = 0; j < n->ncols; j++) {
+    unsigned int start, end;
+    if (id == 0) {
+        start = 0;
+        end = nrows / 2;
+    } else { // id == 1
+        start = nrows / 2;
+        end = nrows;
+    }
+
+    for (unsigned int i = start; i < end; i++) {
+        for (unsigned int j = 0; j < ncols2; j++) {
             TElement sum = 0.0;
-            for (unsigned int k = 0; k < m->ncols; k++) {
+            for (unsigned int k = 0; k < ncols; k++) {
                 sum += m->data[i][k] * n->data[k][j];
             }
             t->data[i][j] = sum;
@@ -54,21 +65,26 @@ TMatrix * mulMatrix_thread(TMatrix *m, TMatrix *n)
     // TODO
     pthread_t threads[NUM_THREADS];
     thread_arg_t args[NUM_THREADS];
+    int ret;
 
-    // Create worker threads
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
         args[i].id = i;
         args[i].m = m;
         args[i].n = n;
         args[i].t = t;
-        int ret = pthread_create(&threads[i], NULL, thread_main, &args[i]);
-        check_pthread_return(ret, "pthread_create failed");
+        ret = pthread_create(&threads[i], NULL, thread_main, &args[i]);
+        if (ret != 0) {
+            perror("pthread_create");
+            exit(EXIT_FAILURE);
+        }
     }
 
-    // Wait for all threads to finish
     for (unsigned int i = 0; i < NUM_THREADS; i++) {
-        int ret = pthread_join(threads[i], NULL);
-        check_pthread_return(ret, "pthread_join failed");
+        ret = pthread_join(threads[i], NULL);
+        if (ret != 0) {
+            perror("pthread_join");
+            exit(EXIT_FAILURE);
+        }
     }
     return t;
 }
