@@ -9,7 +9,7 @@ typedef struct {
     int points;
 } Questions;
 
-int main() {
+int main(int argc, int *argv[]) {
     // USE valgrind --track-fds=yes ./file args
     
     // Questions * q1;
@@ -75,8 +75,11 @@ int main() {
     // dup2(dfd, 1);
     // char *s1 = "Hello";
     // close(fd);
-    char *load[16];
-    read("a.txt", &load, sizeof(int));
-    printf("%s", load);
+    // char *load[16];
+    // read("a.txt", &load, sizeof(int));
+    // printf("%s", load);
+    // return 0;
+    int n = atoi(argv[1]);
+    printf("%d",n);
     return 0;
 }

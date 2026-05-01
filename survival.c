@@ -75,7 +75,6 @@ ParticleSet *fight(int *particles, int count) {
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         // fprintf(stderr, "Usage: ./survival <particle values>\n");
-        // exit(1);
         exit(1);
     }
 
